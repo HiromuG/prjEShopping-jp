@@ -1,0 +1,241 @@
+﻿
+@{
+    ViewBag.Title = "MyCart";
+    Layout = "../Shared/_Layout_MyCart.cshtml";
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<style>
+    /*JQueryDialogCSS*/
+    .ui-dialog.cartConfirmDialogR .ui-widget-header {
+        background: #ff3333;
+        color: white;
+        border: 0;
+    }
+    /*JQueryDialogCSS*/
+    .DeleteConfirm {
+        background-color: red !important;
+        color: white !important;
+    }
+    /*JQueryDialogCSS*/
+    .CancelConfirm {
+        background-color: white !important;
+        color: black !important;
+    }
+</style>
+<div style="margin-top:50px">
+    @*JQueryDialog//////////////////////////////////////////////////////////////////////////////////*@
+    <div id="cartConfirmDialog" title="通知" style="display:none">
+        <div>
+            <h3 class="text-center">この商品をカートから削除しますか?</h3>
+        </div>
+    </div>
+    <div id="cartConfirmDialogR" title="通知" style="display:none">
+        <div>
+            <h3 class="text-center">この商品をカートから削除しますか?</h3>
+        </div>
+    </div>
+    @*上ProgressBar*@
+    <div>
+        <ul class="progressbar" style="font-size:2rem">
+            <li class="active">カート確認</li>
+            <li>注文内容確認</li>
+            <li>注文完了</li>
+        </ul>
+    </div>
+    <br /><br /><br /><br />
+    @*清單(localstorageCartList)//////////////////////////////////////////////////////////////////////////////////*@
+    <h1 class="text-center">ショッピングカート</h1>
+    <br />
+    <table class="table table-hover" id="myCart" style="font-size:1.5rem;vertical-align:middle">
+        <thead>
+            <tr class="bg-danger">
+                <th>商品</th>
+                <th>価格</th>
+                <th>数量</th>
+                <th>小計</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="bg-white"></tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6">
+                    <h2 class="text-right" id="total"></h2>
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+    <hr />
+    <div>
+        <div class="col-md-2 col-sm-3 col-xs-4 col-lg-2">
+            <a href="@Url.Action("Index","Home")" class="bth btn-lg btn-default btn3s" style="border:1px solid">
+                <span class="glyphicon glyphicon-shopping-cart" style="color:orange">
+                    <span style="color:black">他の商品</span>
+                </span>
+            </a>
+        </div>
+        <div id="functionBox">
+            <div class="col-md-2 col-sm-3 col-xs-4 col-lg-3">
+                <a id="clear" class="bth btn-lg btn-default btn3s" style="border:1px solid;cursor:pointer">
+                    <span class="glyphicon glyphicon-trash" style="color:red">
+                        <span style="color:black">一括削除</span>
+                    </span>
+                </a>
+            </div>
+            @*<div class="col-md-offset-4 col-md-2">
+                    <a id="update" href="" class="bth btn-lg btn-default" style="border:1px solid">
+                        <span class="glyphicon glyphicon-refresh" style="color:dodgerblue">
+                            <span style="color:black">更新購物車</span>
+                        </span>
+                    </a>
+                </div>*@
+            <div id="conOd" class="col-md-offset-6 col-md-2 col-sm-offset-3 col-sm-3 col-xs-4 col-lg-offset-5 col-lg-2">
+                <a href="@Url.Action("Orders","Home")" id="order" class="bth btn-lg btn-default btn3s" style="border:1px solid">
+                    <span class="glyphicon glyphicon-check" style="color:forestgreen">
+                        <span style="color:black">注文確認</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var cart = [];
+    initCart();
+    //JQueryDialog//////////////////////////////////////////////////////////////////////
+    function cartConfirmClear() {
+        $("#cartConfirmDialog").dialog({
+            modal: true,
+            dialogClass: "cartConfirmDialogR",
+            buttons: [
+                {
+                    text: "はい",
+                    class: "DeleteConfirm",
+                    click: function () {
+                        localStorage.removeItem("cart");
+                        initCart();
+                        $("#total").empty();
+                        $("#functionBox").hide();
+                        $("#cartConfirmDialog").dialog("close");
+                    }
+                },
+                {
+                    text: "いいえ",
+                    class: "CancelConfirm",
+                    click: function () {
+                        $("#cartConfirmDialog").dialog("close");
+                    }
+                }
+            ], close: function () {
+                $("#cartConfirmDialog").dialog("close");
+            }
+        });
+    };
+    function cartConfirmRemove(targetid) {
+        $("#cartConfirmDialogR").dialog({
+            modal: true,
+            dialogClass: "cartConfirmDialogR",
+            buttons: [
+                {
+                    text: "はい",
+                    title: "はい",
+                    class: "DeleteConfirm",
+                    click: function (ev) {
+                        if (ev.target.title == "はい") {
+                            cart.splice(targetid, 1);
+                            localStorage.setItem("cart", JSON.stringify(cart));
+                            $("#myCart>tbody").empty();
+                            if (localStorage.getItem("cart") == "[]") {
+                                localStorage.removeItem("cart");
+                                $("#total").empty();
+                            }
+                            initCart();
+                        }
+                        $("#cartConfirmDialogR").dialog("close");
+                    }
+                },
+                {
+                    text: "いいえ",
+                    class: "CancelConfirm",
+                    click: function () {
+                        $("#cartConfirmDialogR").dialog("close");
+                    }
+                }
+            ], close: function () {
+                $("#cartConfirmDialogR").dialog("close");
+            }
+        });
+    };
+    //localstorageCartList//////////////////////////////////////////////////////////////////////
+    function initCart() {
+        if (localStorage.getItem("cart")) {
+            cart = JSON.parse(localStorage.getItem("cart"));
+
+            let cartList = "";
+            let total = 0;
+            for (i = 0; i < cart.length; i++) {
+                cartList = "<tr><td><img src='" + cart[i]["ProductImg"] + "' width='100'/>"
+                    + cart[i]["ProductName"] + "</td>"
+                    + "<td style='vertical-align:middle'>" + cart[i]["UnitPrice"] + "</td>"
+                    + "<td style='vertical-align:middle'>"
+                    + "<input onmouseleave='updateItem()' onkeydown='updateItem()' class='form-control kazu' style = 'width:70px' id = '" + cart[i]["ProductID"] + "' type = 'number' min='1' value = '" + cart[i]["ProductAmount"] + "' ></td > "
+                    + "<td style='vertical-align:middle'>" + cart[i]["UnitPrice"] * cart[i]["ProductAmount"] + "</td>"
+                    + "<td style='vertical-align:middle'>" + "<input id='" + i + "'  class='btn btn-danger Remove' type='button' value='削除'/>" + "</td></tr > ";
+                $("#myCart>tbody").append(cartList);
+                total += cart[i]["UnitPrice"] * cart[i]["ProductAmount"];
+            }
+            $("#total").text("合計：" + total + " 元");
+        } else {
+            $("#myCart>tbody").html("<h3>カートに商品は入ってません</h3>");
+            $("#functionBox").hide();
+        }
+    }
+    $("#clear").click(function () {
+        cartConfirmClear();
+        //if (confirm('確定清空購物車嗎?')) {
+        //    localStorage.removeItem("cart");
+        //    initCart();
+        //    $("#total").empty();
+        //    $("#functionBox").hide();
+        //}
+    });
+
+    $("#myCart").click(function (ev) {
+        var targetid = ev.target.id;
+        if (ev.target.value == "削除")
+            cartConfirmRemove(targetid);
+        //if (ev.target.value == "移除") {
+        //    if (confirm('確定要移除此商品嗎?')) {
+        //        cart.splice(ev.target.id, 1);
+        //        localStorage.setItem("cart", JSON.stringify(cart));
+        //        $("#myCart>tbody").empty();
+        //        if (localStorage.getItem("cart") == "[]") {
+        //            localStorage.removeItem("cart");
+        //            $("#total").empty();
+        //        }
+        //        initCart();
+        //    }
+        //}
+    });
+
+    //$("#update").click(function (ev) {
+    //    for (i = 0; i < cart.length; i++) {
+    //        cart[i]["ProductAmount"] = $("#" + cart[i]["ProductID"]).val();
+    //    }
+    //    localStorage.setItem("cart", JSON.stringify(cart));
+    //    $("#myCart>tbody").empty();
+    //    initCart();
+    //});
+
+    function updateItem() {
+        for (i = 0; i < cart.length; i++) {
+            cart[i]["ProductAmount"] = $("#" + cart[i]["ProductID"]).val();
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+        $("#myCart>tbody").empty();
+        initCart();
+    }
+</script>

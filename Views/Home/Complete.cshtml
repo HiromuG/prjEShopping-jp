@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Complete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Swiper v4.1.0 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.1.0/css/swiper.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.1.0/css/swiper.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.1.0/js/swiper.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.1.0/js/swiper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.1.0/js/swiper.esm.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.1.0/js/swiper.esm.bundle.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+    #imgContainer {
+        height:235px;
+        position: relative;
+        overflow:hidden;
+        z-index:-99;
+    }
+    @*RWDSwiper*@
+    .scrollSlider {
+        position: absolute;
+        left: 0;
+        opacity: 0.6;
+        white-space: nowrap;
+        overflow: hidden;
+        @*SwiperImgAnimation*@
+        animation: move-to-left 15s linear infinite;
+        margin: 0;
+    }
+    .scrollSlider img{
+        margin:0 0.5em;
+        height:200px;
+    }
+    @*SwiperImgAnimation*@
+    @@keyframes move-to-left {
+        0%{transform: translate(0,0);}
+        100%{transform:translate(-75%,0);}
+    }
+</style>
+<div style="margin-top:50px">
+    @*上Progressbar*@
+    <div>
+        <ul class="progressbar" style="font-size:2rem">
+            <li>カート確認</li>
+            <li>注文内容確認</li>
+            <li class="active">注文完了</li>
+        </ul>
+    </div>
+    @*CompleteWord*@
+    <br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <div id="complete" class="complete">お買い上げありがとうございます。</div>
+    <hr />
+    @*RWDSwiperImg*@
+    <div id="imgContainer">
+        <div class="scrollSlider">
+            <img src="~/ProductImages/BA_Combo-1.jpg" />
+            <img src="~/ProductImages/BA_Combo-2-1.jpg" />
+            <img src="~/ProductImages/BA_Combo-3.jpg" />
+            <img src="~/ProductImages/signature-spicy-fried-chicken-salad.jpg" />
+            <img src="~/ProductImages/Smoked-chicken-long-burger.jpg" />
+            <img src="~/ProductImages/BA_Combo-4.jpg" />
+            <img src="~/ProductImages/BA_Combo-5.jpg" />
+            <img src="~/ProductImages/BA_Combo-6-1.jpg" />
+        </div>
+    </div>
+    @*BackToIndex*@
+    <div style="position:absolute;bottom:10%;right:10%;font-size:2rem">
+        <a href="@Url.Action("Index","Home")" id="keepShopping">
+            <span id="cart" class="glyphicon glyphicon-shopping-cart" style="color:orange"></span>
+            <span style="color:black">ショッピングを続ける</span>
+        </a>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        let w = document.body.clientWidth;
+        //alert(w);
+
+        //RWDCompleteWord
+        if (w > 992) {
+            $("#complete").animate({
+                left: "20%",
+            });
+            $("#complete").animate({ fontSize: '6rem' }, "slow");
+        }
+        else if (w > 640 && w < 900) {
+            $("#complete").animate({
+                left: "15%"
+            });
+            $("#complete").animate({ fontSize: '3.5rem' }, "slow");
+        }
+        else {
+            $("#complete").animate({
+                left: "10%",
+            });
+            $("#complete").animate({ fontSize: '2.5rem' }, "slow");
+        }
+        //$("#complete").animate({ fontSize: '6rem' }, "slow");
+        //BackToIndexAnimation
+        $("#keepShopping").hover(function () {
+            $("#cart").animate({ fontSize: '8rem' }, "slow");
+        }, function () {
+            $("#cart").animate({ fontSize: '2rem' }, "slow");
+        });
+    })
+</script>

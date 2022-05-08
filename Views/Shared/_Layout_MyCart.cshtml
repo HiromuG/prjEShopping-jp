@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    @*//////////////////////////////////////////////////*@
+    <link href="~/Content/MyStyle.css" rel="stylesheet" />
+    @*//////////////////////////////////////////////////*@
+    <style>
+        body {
+            min-width: 570px;
+        }
+
+        a:link {
+            text-decoration: none !important;
+        }
+        @*NavbarRWD*@
+        @@media only screen and (max-width:768px) {
+            .collapse {
+                background-color: #f2f2f2;
+            }
+
+            .sbox {
+                position: absolute;
+                top: 65px
+            }
+            .navbar-collapse {
+                box-shadow: 0 1px 0 1px gray
+            }
+        }
+    </style>
+</head>
+<body style="background:#f2f2f2">
+    <div class="navbar navbar-default navbar-fixed-top" style="box-shadow:0 0 1px 1px rgb(128 128 128)">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index","Home")">
+                    <img src="~/ProductImages/logo.png" style="width:auto;height:50px" />
+                </a>
+                @Html.ActionLink("マック"+'"'+"練習", "OnSale", "Home", new { area = "" }, new { @class = "navbar-brand amcstyle" })
+            </div>
+            <div class="navbar-collapse collapse" style="text-align:right">
+                <ul class="nav navbar-nav">
+                    <li class="limcstyle">
+                        @Html.ActionLink("ホーム", "OnSale", "Home", new { @class = "navbarunderline" })
+                    </li>
+                    <li class="limcstyle" id="menudrop">
+                        <a class="navbarunderline" style="cursor:pointer">メニュー <span id="caret" class="glyphicon glyphicon-chevron-down" style="font-size:12px"></span></a>
+                    </li>
+                    @*<li class="limcstyle">
+                        <a class="navbarunderline" href="@Url.Action("Map","Home")">尋找餐廳</a>
+                    </li>*@
+                </ul>
+                <div style="float:right;margin-top:5px;font-size:1.5rem" class="sbox">
+                    <a href="@Url.Action("Search","Home")" class="form-inline" style="display:inline;padding-right:20px;color:black">
+                        <span> <span class="glyphicon glyphicon-search"></span> 検索</span>
+                    </a>
+                    <a href="@Url.Action("Map","Home")" style="display:inline;font-size:1.5rem;">
+                        <span class="glyphicon glyphicon-flag text-danger"></span>
+                        <span style="color:black">店舗情報</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        @*//NavbarMenu//////////////////////////////////////////////////////////*@
+        <div id="mcmenu" class="bg-white table-bordered" style="display:none;box-shadow: 0 5px 5px rgba(0, 0, 0, 0.28);">
+            <div class="row">
+                <div class="container">
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <a href="/Home/Index?categoryID=1" style="font-size:large;color:black">
+                            <h4>
+                                <img src="/ProductImages/egg-mcmuffin - category.jpg" style="width:60px;height:50px" />
+                                朝マック"
+                            </h4>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <a href="/Home/Index?categoryID=2" style="font-size:large;color:black">
+                            <h4>
+                                <img src="/ProductImages/EVM-01-Big-Mac - category.jpg" style="width:60px;height:50px" />
+                                セット
+                            </h4>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <a href="/Home/Index?categoryID=3" style="font-size:large;color:black">
+                            <h4>
+                                <img src="/ProductImages/signature-blt-beef - category.jpg" style="width:60px;height:50px" />
+                                厳選セット
+                            </h4>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <a href="/Home/Index?categoryID=4" style="font-size:large;color:black">
+                            <h4>
+                                <img src="/ProductImages/EVM_Combo-A - category.jpg" style="width:60px;height:50px" />
+                                サイドメニュー
+                            </h4>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <a href="/Home/Index?categoryID=5" style="font-size:large;color:black">
+                            <h4>
+                                <img src="/ProductImages/hsb-mccrispy-6pcs - category.jpg" style="width:60px;height:50px" />
+                                シェアセット
+                            </h4>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <a href="/Home/Index?categoryID=6" style="font-size:large;color:black">
+                            <h4>
+                                <img src="/ProductImages/Combo-Chicken-McNuggets - category.jpg" style="width:60px;height:50px" />
+                                ハッピーセット
+                            </h4>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <a href="/Home/Index?categoryID=7" style="font-size:large;color:black">
+                            <h4>
+                                <img src="/ProductImages/BA_Combo-2-1 - category.jpg" style="width:60px;height:50px" />
+                                コインセット
+                            </h4>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <a href="/Home/Index?categoryID=8" style="font-size:large;color:black">
+                            <h4>
+                                <img src="/ProductImages/espresso - category.jpg" style="width:60px;height:50px" />
+                                マッグCaf&#233;
+                            </h4>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <a href="/Home/Index?categoryID=9" style="font-size:large;color:black">
+                            <h4>
+                                <img src="/ProductImages/milk-tea-iced - category.jpg" style="width:60px;height:50px" />
+                                ドリンクとスイーツ
+                            </h4>
+                        </a>
+                    </div>
+                    <div class="placeholder-100pct">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+        @*////////////////////////////////////////////////////////////*@
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            @*<p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>*@
+        </footer>
+    </div>
+    @RenderSection("map", required: false)
+</body>
+</html>
+<script>
+    //NavbarmenuAnimation
+    $("#menudrop").click(function () {
+        $("#mcmenu").fadeToggle();
+        $("#caret").toggleClass("glyphicon-chevron-up glyphicon-chevron-down");
+    });
+    
+</script>

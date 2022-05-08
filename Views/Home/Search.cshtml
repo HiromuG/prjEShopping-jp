@@ -1,0 +1,55 @@
+﻿@model IEnumerable<prjEShopping.Models.Products>
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout_Search.cshtml";
+}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<link href="~/Content/MyStyle.css" rel="stylesheet" />
+<style>
+    /*SearchText*/
+    .searchInput {
+        font-size: 3rem;
+        outline: 0;
+        border-width: 0 0 2px;
+        border-color: orange;
+    }
+    /*SearchResultCSS*/
+    .searchBox {
+        font-size: 3rem;
+        margin-bottom: 20px;
+    }
+</style>
+<body>
+    <div style="margin-top:50px;">
+        <h1 class="text-center">商品を探す</h1>
+        <br />
+        @*SearchText*@
+        <div class="searchBox">
+            @using (Html.BeginForm("Search", "Home"))
+            {
+                @Html.TextBox("SearchProducts", null, new { @class = "searchInput", @placeholder = "検索" })
+                <button type="submit" style="border:none;color:red"><span class="glyphicon glyphicon-search"></span></button>
+
+            }
+            @*AllProdustsButton*@
+            <a style="color:black" href="@Url.Action("Index","Home")">
+                <div class="allResult">
+                </div>
+            </a>
+        </div>
+
+        @*SearchResult*@
+        <h2 id="viewB" class="text-danger text-center">@ViewBag.SearchResult</h2>
+        <br />
+        @foreach (var item in Model)
+        {
+            <div class="panel col-md-4 col-xs-6 text-center bg-white">
+                <span style="display:none">@Html.DisplayFor(modelItem => item.ProductName)</span>
+                <img src="~/ProductImages/@Html.DisplayFor(modelItem => item.ProductImg)" alt="@Html.DisplayFor(modelItem => item.ProductImg)" style="width:250px;height:auto" />
+                <h4><strong>@Html.DisplayFor(modelItem => item.ProductName)</strong></h4>
+            </div>
+
+        }
+    </div>
+</body>

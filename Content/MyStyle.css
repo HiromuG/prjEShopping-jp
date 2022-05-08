@@ -1,0 +1,178 @@
+﻿.bg-white{
+    background-color:white;
+}
+.navbar {
+    height:80px;
+}
+/*Layout/NavbarTitleWordCSS*/
+.amcstyle{
+    margin-top:15px;
+    font-size:2rem;
+}
+/*Layout/NavbarHomeWordCSS*/
+.limcstyle{
+    margin-top:30px;
+    font-size:18px ;
+}
+/*Layout/NavbarWordUnderline*/
+.navbarunderline:hover{
+    border-bottom:5px solid red;
+    padding-bottom:10px;
+    transition:all 0.5s
+}
+/*Index/LeftMenuHover*/
+.listhoverred:hover {
+    border-left: 10px solid red;
+    border-radius: 1%;
+    margin-left: -15px !important;
+    transition:all 0.5s;
+}
+/*OnSale/4blockUnderCarousel*/
+.carousel-indicators li[data-target], 
+.carousel-indicators li[data-target] active{
+    width: 20%;
+    height: 10px;
+    border: none;
+    border-radius: 30px;
+    background-color: gray;
+}
+    .carousel-indicators li[data-target].active {
+        background-color: orange;
+    }
+/*Index/BuyProductAnimation*/
+.addCartBox {
+    background-image: linear-gradient(rgba(255,245,204), rgba(255,179,179));
+    position: absolute;
+    bottom: -150%;
+    left:-10px;
+    width: 100%;
+    transition: all 0.5s ease
+}
+/*Index/BuyProductPanelAnimation*/
+.panel{
+    position:relative;
+    overflow:hidden;
+}
+/*Index/BuyProductPanelAnimation*/
+.panel:hover{
+    top:-10%;
+}
+/*Index/BuyProductPanelAnimation*/
+.panel:hover .addCartBox{
+    display:block;
+    position:absolute;
+    left:-10px;
+    bottom:0;
+}
+/*MyCart&Orders&Complete上ProgressBar*/
+.progressbar{
+        counter-reset:step;
+    }
+    .progressbar li{
+        list-style-type:none;
+        float:left;
+        width:33.33%;
+        position:relative;
+        text-align:center;
+    }
+    .progressbar li:before{
+        content:counter(step);
+        counter-increment:step;
+        width:36px;
+        height:36px;
+        line-height:30px;
+        border:2px solid;
+        display:block;
+        text-align:center;
+        margin:0 auto 10px auto;
+        border-radius:50%;
+        background-color:white;
+    }
+        .progressbar li.active:before {
+            background-image: linear-gradient(#b3ffb3,#ffff66);
+        }
+    .progressbar li:after{
+        content:"";
+        position:absolute;
+        width:100%;
+        height:2px;
+        background-color:grey;
+        top:18px;
+        left:-50%;
+        z-index:-1;
+    }
+    .progressbar li:first-child:after{
+        content:none;
+    }
+    .progressbar li.active{
+        color:green;
+    }
+    .progressbar li.active + li:after{
+        background-color:green;
+    }
+/*Search/AllProductsButton*/
+.allResult{
+    width:160px;
+    height:50px;
+    background-color:#ffcc66;
+    position:absolute;
+    top:23.5%;
+    right:5%;
+    cursor:pointer;
+    overflow:hidden;
+}
+    .allResult:before{
+        font-size:2rem;
+        content:"全部商品";
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        transition:all 0.3s;
+    }
+    .allResult:hover:before{
+        top:-30px
+    }
+    .allResult:after {
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        content: "\f03e";
+        font-size: 3rem;
+        position:absolute;
+        top: calc(100% + 30px);
+        left: 50%;
+        transform: translate(-50%,-50%);
+        transition:all 0.3s;
+    }
+    .allResult:hover:after{
+        top:50%
+    }
+/*Index/CartButton*/
+.CartAll {
+    font-size: 5rem;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    z-index: 2;
+    cursor: pointer
+}
+/*Index/CartButton*/
+.cartBadge {
+    position: fixed;
+    right: 60px;
+    font-size: 2rem;
+    background-color: red;
+    border-radius: 50%;
+    z-index:1;
+}
+/*Index/CartButton*/
+.cartSpan {
+    color: orange;
+}
+    .cartSpan:hover{
+        font-size:8rem;
+        transition:all 1s
+    }
+.noHover {
+    pointer-events: none;
+}

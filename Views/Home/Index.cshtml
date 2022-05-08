@@ -1,0 +1,288 @@
+﻿@model prjEShopping.Models.CategoryProductVM
+@{
+    ViewBag.Title = "商品列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
+<style>
+    a:link {
+        text-decoration: none !important;
+    }
+    /*JQueryDialogCSS*/
+    .ui-dialog.cartDialog .ui-widget-header {
+        background: #ffc107;
+        border: 0;
+    }
+    /*RWD*/
+    @@media only screen and (max-width:992px) {
+        #Category {
+            display: none;
+        }
+        #CategoryMobile {
+            display: inline-block;
+        }
+    }
+
+    @@media (min-width:993px) {
+        #CategoryMobile {
+            display: none;
+        }
+
+        #Category {
+            display: inline-block;
+            animation: CategoryMove 3s ease forwards;
+        }
+        @@keyframes CategoryMove{
+            0%{transform:translateY(-20%)}
+            100%{transform:translateY(0)}
+        }
+        /*BuyProduct*/
+        #BuyProduct {
+            animation: BuyProductFadeIn 2s ease forwards;
+        }
+        @@keyframes BuyProductFadeIn{
+            0%{opacity:0}
+            100%{opacity:1}
+        }
+    }
+</style>
+@*CartButton*@
+<a href="@Url.Action("MyCart","Home")">
+    <span class="CartAll">
+        <span class="badge bg-danger cartBadge" id="itemAmount"></span>
+        <span id="cart" class="glyphicon glyphicon-shopping-cart cartSpan"></span>
+    </span>
+</a>
+<div class="row" style="margin-top:50px">
+    @*//////////////////////////////////////////////////////////////////////////////////*@
+    <h2 class="text-center text-danger">
+        @TempData["SearchResult"]
+    </h2>
+    @*JQueryDialog*@
+    <div id="cartDialog" title="通知" style="display:none">
+        <div>
+            <h3 class="text-center">この商品はすでにカートに入れました</h3>
+        </div>
+    </div>
+    @*RightMenu//////////////////////////////////////////////////////////////////////////////////*@
+    <div id="CategoryMobile" class="table-bordered bg-white checkbox-inline" style="border-radius:10px;margin-top:20px; text-decoration:none;">
+        <div class="container">
+            <div class="col-sm-4 col-xs-4">
+                <a href="/Home/Index?categoryID=1" style="font-size:large;color:black">
+                    <h4>
+                        <img src="/ProductImages/egg-mcmuffin - category.jpg" style="width:60px;height:50px" />
+                        朝マック"
+                    </h4>
+                </a>
+            </div>
+            <div class="col-sm-4 col-xs-4">
+                <a href="/Home/Index?categoryID=2" style="font-size:large;color:black">
+                    <h4>
+                        <img src="/ProductImages/EVM-01-Big-Mac - category.jpg" style="width:60px;height:50px" />
+                        セット
+                    </h4>
+                </a>
+            </div>
+            <div class="col-md-4 col-xs-4">
+                <a href="/Home/Index?categoryID=3" style="font-size:large;color:black">
+                    <h4>
+                        <img src="/ProductImages/signature-blt-beef - category.jpg" style="width:60px;height:50px" />
+                        厳選
+                    </h4>
+                </a>
+            </div>
+            <div class="col-sm-4 col-xs-4">
+                <a href="/Home/Index?categoryID=4" style="font-size:large;color:black">
+                    <h4>
+                        <img src="/ProductImages/EVM_Combo-A - category.jpg" style="width:60px;height:50px" />
+                        サイド
+                    </h4>
+                </a>
+            </div>
+            <div class="col-sm-4 col-xs-4">
+                <a href="/Home/Index?categoryID=5" style="font-size:large;color:black">
+                    <h4>
+                        <img src="/ProductImages/hsb-mccrispy-6pcs - category.jpg" style="width:60px;height:50px" />
+                        シェア
+                    </h4>
+                </a>
+            </div>
+            <div class="col-sm-4 col-xs-4">
+                <a href="/Home/Index?categoryID=6" style="font-size:large;color:black">
+                    <h4>
+                        <img src="/ProductImages/Combo-Chicken-McNuggets - category.jpg" style="width:60px;height:50px" />
+                        ハッピー
+                    </h4>
+                </a>
+            </div>
+            <div class="col-sm-4 col-xs-4">
+                <a href="/Home/Index?categoryID=7" style="font-size:large;color:black">
+                    <h4>
+                        <img src="/ProductImages/BA_Combo-2-1 - category.jpg" style="width:60px;height:50px" />
+                        コイン
+                    </h4>
+                </a>
+            </div>
+            <div class="col-sm-4 col-xs-4">
+                <a href="/Home/Index?categoryID=8" style="font-size:large;color:black">
+                    <h4>
+                        <img src="/ProductImages/espresso - category.jpg" style="width:60px;height:50px" />
+                        Caf&#233;
+                    </h4>
+                </a>
+            </div>
+            <div class="col-sm-4 col-xs-4">
+                <a href="/Home/Index?categoryID=9" style="font-size:large;color:black">
+                    <h4>
+                        <img src="/ProductImages/milk-tea-iced - category.jpg" style="width:60px;height:50px" />
+                        スイーツ
+                    </h4>
+                </a>
+            </div>
+            <div class="placeholder-100pct">&nbsp;</div>
+        </div>
+    </div>
+    @*Leftmenu//////////////////////////////////////////////////////////////////////////////////*@
+    <div id="Category" class="col-md-3 table-bordered bg-white" style="border-radius:10px;margin-top:50px; text-decoration:none;box-shadow:5px 5px #888888">
+        @foreach (var item in Model.Category)
+        {
+            <ul style="list-style-type:none;margin:0;padding:0" class="listhoverred">
+                <li style="padding-top:10px">
+                    <a href="?categoryID=@item.CategoryID" style="font-size:large;color:black">
+                        <h4>
+                            <img src="~/ProductImages/@item.CategoryImg" style="width:90px;height:auto" />
+                            @item.CategoryName
+                        </h4>
+                    </a>
+                </li>
+            </ul>
+        }
+    </div>
+    @*BuyProduct*@
+    <div class="col-md-9" id="BuyProduct">
+        <br />
+        <h1 class="text-center" style="font-family:'Noto Sans' !important">@ViewBag.CategoryName</h1>
+        <hr />
+        @foreach (var item in Model.Products)
+        {
+            <div class="panel col-md-4 col-xs-6 text-center" style="box-shadow:1px #888888">
+                <span class="ProductID" style="display:none">@item.autoID</span>
+                <img class="ProductImg" src="~/ProductImages/@item.ProductImg" alt="@item.ProductName" style="width:250px;height:auto" />
+                <h3 class="ProductName">@item.ProductName</h3>
+                <div class="panel-body addCartBox" style="width:110%;left:-5%">
+                    <h3><strong>@item.ProductName</strong></h3>
+                    <div>
+                        <h4 class="UnitPrice" title="@item.UnitPrice">価格：@Math.Floor(item.UnitPrice) 元</h4>
+                    </div>
+                    <div class="form-group">
+                        @*<label class="control-label col-xs-4" for="o">數量：</label>*@
+                        <select style="margin-left:auto;margin-right:auto" name="o" class="form-control amount">
+                            @for (int i = 1; i <= 10; i++)
+                            {
+                                <option>@i</option>
+                            }
+                        </select>
+                        <br />
+                        <button style="border:1px solid black;color:black" class="btn btn-warning addCart">カートに入れる</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script type='text/javascript' src="codex-fly.js"></script>
+<script>
+    @*localstorageCart//////////////////////////////////////////////////////////////////////////////////*@
+    var cart = [];
+    if (localStorage.getItem("cart")) {
+        cart = JSON.parse(localStorage.getItem("cart"));
+        $("#itemAmount").text(cart.length);
+    }
+    $(".addCart").click(function () {
+        let product = $(this).closest(".panel");
+        let newPID = product.find(".ProductID").text();
+        if (cart.length > 0) {
+            for (let i = 0; i < cart.length; i++) {
+                if (newPID.toString() == cart[i]["ProductID"]) {
+                    /*alert("此商品已經在購物車中囉~");*/
+                    $("#cartDialog").dialog({
+	                    width: 350,
+	                    modal: true,
+                        resizable: false,
+                        dialogClass: "cartDialog",
+                        buttons: {
+                            "確定": function () {
+                                $("#cartDialog").dialog("close");
+                            }
+                        }
+                    });
+                    break;
+                }
+                else if (i == cart.length - 1) {
+                    setCart(product);
+                    break;
+                }
+            }
+        }
+        else {
+            setCart(product);
+        }
+
+        function setCart(product) {
+            let newItem = {
+                ProductID: product.find(".ProductID").text(),
+                ProductName: product.find(".ProductName").text().trim(),
+                ProductAmount: parseInt(product.find(".amount").val()),
+                UnitPrice: parseInt(product.find(".UnitPrice").attr("title")),
+                ProductImg: product.find(".ProductImg").attr("src")
+            };
+            cart.push(newItem);
+            $("#itemAmount").text(cart.length);
+
+            //FlyAnimation///////////////////////////////////////////////////////////////////
+            var imgtodrag = product.find("img").eq(0);
+            var myCart = $("#cart");
+            if (imgtodrag) {
+                var imgclone = imgtodrag.clone()
+                    .offset({
+                        top: imgtodrag.offset().top,
+                        left: imgtodrag.offset().left
+                    })
+                    .css({
+                        'opacity': '0.5',
+                        'position': 'absolute',
+                        'height': '150px',
+                        'width': '150px',
+                        'z-index': '100'
+                    })
+                    .appendTo($('body'))
+                    .animate({
+                        'top': myCart.offset().top + 10,
+                        'left': myCart.offset().left + 10,
+                        'width': 75,
+                        'height': 75
+                    }, 1000, 'easeInOutExpo');
+
+                setTimeout(function () {
+                    myCart.effect("shake");
+                }, 1500);
+
+                imgclone.animate({
+                    'width': 0,
+                    'height': 0
+                }, function () {
+                    $(this).detach()
+                });
+            }
+            /////////////////////////////////////////////////////////////////////
+
+            /*alert("商品放入購物車!");*/
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+    });
+</script>

@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "Map";
+}
+@section map{
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBi1QRWJlewliD8ElDkn5wI2EmSYK9UAIQ&callback=initMap">
+    </script>
+    <style>
+        #placeSearch:focus {
+            outline-width: 0
+        }
+    </style>
+    @*<div class="container" style="margin-top:10px;font-size:36px">
+        <input id="placeSearch" type="text" ref="site" v-model="site" placeholder="搜尋地點" style="border:none;border-bottom:1px solid" />
+        <button class="btn btn-link" style="background-color:darkorange;border-radius:10%">
+            <span class="glyphicon glyphicon-search" style="font-size:36px;color:black;padding:0"></span>
+        </button>
+    </div>*@
+
+    <div>
+
+        <div id="map" style="height:600px;width:100%"></div>
+        <script>
+            ////////////////////////////////////////
+            function initMap() {
+                var mapCenter = { lat: 23.5, lng: 120.5 };
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 7.5,
+                    center: mapCenter
+                });
+                var positionData = [
+                    {
+                        position: { lat: 22.66499262529337, lng: 120.5212640060317 },
+                        map: map,
+                        title:'屏東民生店'
+                    }, {
+                        position: { lat: 22.66879428305736, lng: 120.50255291624433 },
+                        map: map,
+                        title: '屏東復興店'
+                    }, {
+                        position: { lat: 22.67703084677743, lng: 120.50650112784807 },
+                        map: map,
+                        title: '屏東環球店'
+                    }, {
+                        position: { lat: 22.637871163696047, lng: 120.30231509108376 },
+                        map: map,
+                        title: '高雄建國三店'
+                    }, {
+                        position: { lat: 22.997407816422314, lng: 120.2251215324256 },
+                        map: map,
+                        title: '台南大學店'
+                    }, {
+                        position: { lat: 23.48053962268866, lng: 120.44953210002595},
+                        map: map,
+                        title: '嘉義中山店'
+                    }, {
+                        position: { lat: 23.705327952640882, lng: 120.53263911489957 },
+                        map: map,
+                        title: '斗六雲林店'
+                    }
+                ]
+                for (var i = 0; i < positionData.length; i++) {
+                    var marker = new google.maps.Marker(positionData[i]);
+                    var content = positionData[i].title;
+                    AppearInfo(marker,content);
+                }
+                function AppearInfo(marker,content) { 
+                    var infowindow = new google.maps.InfoWindow({
+                        content: content,
+                    });
+                    marker.addListener("click", () => {
+                        infowindow.open({
+                            anchor: marker,
+                            map,
+                            shouldFocus: true,
+                        });
+                    });
+                }
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        var marker = new google.maps.Marker({
+                            position: pos,
+                            icon: 'marker.png',
+                            map: map
+                        });
+                        map.setZoom(17);
+                        map.setCenter(pos);
+                    });
+                } else {
+                    // Browser doesn't support Geolocation
+                    alert("未允許或遭遇錯誤！");
+                }
+            }
+        </script>
+    </div>
+}
